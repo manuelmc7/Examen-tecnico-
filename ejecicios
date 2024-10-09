@@ -1,1 +1,91 @@
-carlos 
+1. Django: Modelo para aplicación de biblioteca
+
+from django.db import models
+
+class Autor(models.Model):
+    nombre = models.CharField(max_length=100)
+    fecha_nacimiento = models.DateField()
+
+    def __str__(self):
+        return self.nombre
+
+class Libro(models.Model):
+    titulo = models.CharField(max_length=200)
+    autor = models.ForeignKey(Autor, on_delete=models.CASCADE)
+    fecha_publicacion = models.DateField()
+
+    def __str__(self):
+        return self.titulo
+
+
+2. Python
+Función para ordenar una lista de números:
+
+def ordenar_lista(numeros):
+    return sorted(numeros)
+
+# Ejemplo de uso
+numeros = [34, 12, 45, 2, 9]
+print(ordenar_lista(numeros))  # Resultado: [2, 9, 12, 34, 45]
+
+Script para contar palabras en un archivo de texto:
+
+def contar_palabras(nombre_archivo):
+    with open(nombre_archivo, 'r') as archivo:
+        texto = archivo.read()
+        palabras = texto.split()
+        return len(palabras)
+
+# Ejemplo de uso
+nombre_archivo = 'texto.txt'
+print(f"Cantidad de palabras: {contar_palabras(nombre_archivo)}")
+
+3. MySQL
+Crear tabla "Usuarios":
+
+CREATE TABLE Usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50),
+    email VARCHAR(100),
+    fecha_de_registro DATE
+);
+
+Insertar tres registros en "Usuarios":
+
+INSERT INTO Usuarios (nombre, email, fecha_de_registro)
+VALUES
+('Carlos Perez', 'carlos@example.com', '2024-10-01'),
+('Ana García', 'ana@example.com', '2024-09-15'),
+('Luis Rojas', 'luis@example.com', '2024-08-22');
+
+4. API CRUD en Django: Operaciones en "Tareas"
+Define un modelo Tarea y crea las vistas correspondientes para realizar las operaciones CRUD (Crear, Leer, Actualizar, Eliminar). Usa Django Rest Framework (DRF).
+
+Modelo:
+
+from django.db import models
+
+class Tarea(models.Model):
+    titulo = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    completada = models.BooleanField(default=False)
+
+Serializador:
+
+from rest_framework import serializers
+from .models import Tarea
+
+class TareaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tarea
+        fields = '__all__'
+
+Vistas:
+
+from rest_framework import viewsets
+from .models import Tarea
+from .serializers import TareaSerializer
+
+class TareaViewSet(viewsets.ModelViewSet):
+    queryset = Tarea.objects.all()
+    serializer_class = TareaSerializer
